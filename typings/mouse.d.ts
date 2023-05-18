@@ -20,5 +20,12 @@ export type Location = {
     position: Position;
     callback: LocationCallback;
 };
+export type MouseRefState = {
+    locations: Location[];
+    cursorPosition: [number, number] | null;
+};
+export type MouseProps = {
+    fullScreen?: boolean;
+} & PropsWithChildren;
 export declare const MouseContext: React.Context<((currentPosition: Position | null, location: Location) => void) | null>;
-export declare function MouseProvider(props: PropsWithChildren): React.JSX.Element;
+export declare function MouseProvider(props: MouseProps): React.JSX.Element | null;

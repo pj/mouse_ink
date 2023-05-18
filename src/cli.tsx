@@ -14,23 +14,27 @@ export default function App() {
     }
   });
   return (
+      // <MouseProvider fullScreen={true}>
       <MouseProvider>
-    <FullScreenProvider>
         <Box flexDirection='column' alignItems='flex-start'>
-          <ClickableBox onClick={(event: MouseEvent) => setMessage(`First ${JSON.stringify(event)}`)}>
-            <Text color="cyan">First</Text>
-          </ClickableBox>
-          <ClickableBox onClick={(event: MouseEvent) => setMessage(`Second ${JSON.stringify(event)}`)}>
-            <Text color="magenta">Second</Text>
-          </ClickableBox>
+          <Box flexDirection='row' alignItems='flex-start'>
+            <ClickableBox onClick={(event: MouseEvent) => setMessage(`First ${JSON.stringify(event)}`)}>
+              <Text color="cyan">First</Text>
+            </ClickableBox>
+            <ClickableBox onClick={(event: MouseEvent) => setMessage(`Second ${JSON.stringify(event)}`)}>
+              <Text color="magenta">Second</Text>
+            </ClickableBox>
+          </Box>
           <ClickableBox onClick={(event: MouseEvent) => setMessage(`Third ${JSON.stringify(event)}`)}>
             <Text color="yellow">Third</Text>
           </ClickableBox>
+          <ClickableBox onClick={(event: MouseEvent) => setMessage(`Fourth ${JSON.stringify(event)}`)}>
+            <Text color="white">Fourth</Text>
+          </ClickableBox>
+          <Text>
+            Message: <Text color="green">{message}</Text>
+          </Text>
         </Box>
-        <Text>
-          Message: <Text color="green">{message}</Text>
-        </Text>
-    </FullScreenProvider>
       </MouseProvider>
   );
 }

@@ -16,9 +16,12 @@
 		"dist"
 	],
 	"dependencies": {
+		"@types/intercept-stdout": "^0.1.0",
 		"ink": "^4.1.0",
+		"intercept-stdout": "^0.1.2",
 		"keypress": "^0.2.1",
-		"react": "^18.2.0"
+		"react": "^18.2.0",
+		"yoga-wasm-web": "^0.3.3"
 	},
 	"devDependencies": {
 		"@sindresorhus/tsconfig": "^3.0.1",
