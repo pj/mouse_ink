@@ -1,21 +1,20 @@
 {
-  description = "Flake for lazy_test dev environment";
+  description = "Flake for mouse_ink dev environment";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs";
-    flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils }: 
-    flake-utils.lib.eachDefaultSystem (system:
-        let 
-            pkgs = nixpkgs.legacyPackages.${system};
-            deps = with pkgs; [
-                nodejs-20_x
-            ];
-        in {
-            packages = deps;
-            devShell = pkgs.mkShell { buildInputs = deps; };
-        }
-    );
+  outputs = { self, nixpkgs }: 
+    let 
+        system = "aarch64-darwin";
+        pkgs = nixpkgs.legacyPackages.${system};
+        deps = rec {
+            nodejs-18_x = pkgs.nodejs-18_x;
+            default = nodejs-18_x;
+        };
+    in {
+        packages.${system} = deps;
+        devShells.${system}.default = pkgs.mkShell { packages = pkgs.lib.attrsets.attrValues deps; };
+    };
 }
