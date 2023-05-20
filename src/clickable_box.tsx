@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useEffect, useRef, useState } from "react";
-import { LocationCallback, Position, useMouse } from "./mouse.js";
+import { LocationCallback, Position, useMouse, MouseEvent } from "./mouse.js";
 import { Box, DOMElement, Text } from "ink";
 import {isDeepStrictEqual} from 'util';
 
@@ -7,7 +7,7 @@ type ClickableBox = {
   onClick: LocationCallback
 } & PropsWithChildren;
 
-export function ClickableBox(props: ClickableBox) {
+export function Button(props: ClickableBox) {
   const updateLocation = useMouse();
   const ref = useRef<DOMElement | null>(null);
   const [currentPosition, setCurrentPosition] = useState<Position | null>(null);
@@ -27,7 +27,11 @@ export function ClickableBox(props: ClickableBox) {
         updateLocation(
             null, {
             position: position,
-            callback: props.onClick
+            callback: (event: MouseEvent) => {
+                if (event.type === "mouseup") {
+                    props.onClick(event)
+                }
+            }
         });
       }
     }
