@@ -1,7 +1,9 @@
-import React, { PropsWithChildren } from "react";
+import React from "react";
 import { LocationCallback } from "./mouse.js";
 type ClickableBox = {
     onClick: LocationCallback;
-} & PropsWithChildren;
-export declare function ClickableBox(props: ClickableBox): React.JSX.Element;
+    text: string;
+    type: "primary" | "secondary" | "error";
+};
+export declare function Button(props: ClickableBox): React.JSX.Element;
 export {};

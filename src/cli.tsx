@@ -2,8 +2,9 @@
 import { Box, Text, render, useApp, useInput } from 'ink';
 import React, { useState } from 'react';
 import { MouseProvider, MouseEvent } from './mouse.js';
-import { Button } from './clickable_box.js';
+import { Button } from './button.js';
 import { FullScreenProvider } from './fullscreen.js';
+import { Scrollable } from './scrollable.js';
 
 export default function App() {
   const [message, setMessage] = useState("no button clicked");
@@ -13,27 +14,35 @@ export default function App() {
       exit();
     }
   });
+  let items = []
+  for (let x = 0; x < 20; x++) {
+    items.push(`Item ${x}`)
+  }
   return (
-      // <MouseProvider fullScreen={true}>
-      <MouseProvider>
+      <MouseProvider fullScreen={true}>
+      {/* <MouseProvider> */}
         <Box flexDirection='column' alignItems='flex-start'>
           <Box flexDirection='row' alignItems='flex-start'>
-            <Button onClick={(event: MouseEvent) => setMessage(`First ${JSON.stringify(event)}`)}>
-              <Text color="cyan">First</Text>
-            </Button>
-            <Button onClick={(event: MouseEvent) => setMessage(`Second ${JSON.stringify(event)}`)}>
-              <Text color="magenta">Second</Text>
-            </Button>
+            <Button 
+              text="Primary" 
+              type="primary" 
+              onClick={(event: MouseEvent) => setMessage(`Primary clicked ${JSON.stringify(event)}`)} 
+            />
+            <Button 
+              text="Secondary" 
+              type="secondary" 
+              onClick={(event: MouseEvent) => setMessage(`Secondary clicked ${JSON.stringify(event)}`)} 
+            />
           </Box>
-          <Button onClick={(event: MouseEvent) => setMessage(`Third ${JSON.stringify(event)}`)}>
-            <Text color="yellow">Third</Text>
-          </Button>
-          <Button onClick={(event: MouseEvent) => setMessage(`Fourth ${JSON.stringify(event)}`)}>
-            <Text color="white">Fourth</Text>
-          </Button>
+          <Button 
+            text="Error" 
+            type="error" 
+            onClick={(event: MouseEvent) => setMessage(`Error clicked ${JSON.stringify(event)}`)} 
+          />
           <Text>
             Message: <Text color="green">{message}</Text>
           </Text>
+          <Scrollable itemsToDisplay={5} items={items}/>
         </Box>
       </MouseProvider>
   );

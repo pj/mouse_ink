@@ -4,8 +4,10 @@ import { Box, DOMElement, Text } from "ink";
 import {isDeepStrictEqual} from 'util';
 
 type ClickableBox = {
-  onClick: LocationCallback
-} & PropsWithChildren;
+  onClick: LocationCallback;
+  text: string;
+  type: "primary" | "secondary" | "error";
+};
 
 export function Button(props: ClickableBox) {
   const updateLocation = useMouse();
@@ -37,9 +39,19 @@ export function Button(props: ClickableBox) {
     }
   });
 
+  let color = "green";
+  let emoji = "✅"
+  if (props.type === "secondary") {
+    color = "white";
+    emoji = "📋"
+  } else if (props.type === "error") {
+    color = "red";
+    emoji = "❗"
+  }
+
   return (
-    <Box ref={ref} borderStyle="round">
-      {props.children}
+    <Box ref={ref} borderStyle="round" borderColor={color}>
+        <Text color={color}> {emoji}  {props.text} </Text>
     </Box>
   );
 }
