@@ -42,7 +42,8 @@ export default function App() {
           <Text>
             Message: <Text color="green">{message}</Text>
           </Text>
-          <Scrollable itemsToDisplay={5} items={items}/>
+          <Scrollable itemsToDisplay={5} items={items} multipleSelect={true} />
+          <Scrollable itemsToDisplay={5} items={items} multipleSelect={false} />
         </Box>
       </MouseProvider>
   );
