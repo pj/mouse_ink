@@ -4,10 +4,12 @@ import React, { useState } from 'react';
 import { MouseProvider, MouseEvent } from './mouse.js';
 import { Button } from './button.js';
 import { FullScreenProvider } from './fullscreen.js';
-import { Scrollable } from './scrollable.js';
+import { Select } from './select.js';
 
 export default function App() {
   const [message, setMessage] = useState("no button clicked");
+  const [scrollable1Indexes, setScrollable1Indexes] = useState<number[]>([]);
+  const [scrollable2Indexes, setScrollable2Indexes] = useState<number[]>([]);
   const { exit } = useApp();
   useInput((input, key) => {
     if (input === 'q') {
@@ -40,10 +42,26 @@ export default function App() {
             onClick={(event: MouseEvent) => setMessage(`Error clicked ${JSON.stringify(event)}`)} 
           />
           <Text>
-            Message: <Text color="green">{message}</Text>
+            Button Event: <Text color="green">{message}</Text>
           </Text>
-          <Scrollable itemsToDisplay={5} items={items} multipleSelect={true} />
-          <Scrollable itemsToDisplay={5} items={items} multipleSelect={false} />
+          <Select 
+            itemsToDisplay={5} 
+            items={items} 
+            multipleSelect={false} 
+            onSelect={(selected: number[]) => setScrollable1Indexes(selected)}
+          />
+          <Text>
+            Scrollable 1 Selected Indexes: <Text color="green">{JSON.stringify(scrollable1Indexes)}</Text>
+          </Text>
+          <Select 
+            itemsToDisplay={5} 
+            items={items} 
+            multipleSelect={true} 
+            onSelect={(selected: number[]) => setScrollable2Indexes(selected)}
+          />
+          <Text>
+            Scrollable 2 Selected Indexes: <Text color="green">{JSON.stringify(scrollable2Indexes)}</Text>
+          </Text>
         </Box>
       </MouseProvider>
   );

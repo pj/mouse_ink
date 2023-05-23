@@ -9,13 +9,14 @@ import fs from 'fs';
 //   fs.createWriteStream("error.log")
 // );
 
-type ScrollableBox = {
+type SelectProps = {
   items: string[];
   itemsToDisplay: number;
   multipleSelect: boolean;
+  onSelect: (selected: number[]) => void;
 };
 
-type ScrollableState = {
+type SelectState = {
   currentIndex: number;
   selectedIndexes: number[];
   currentBoundingBox: Position | null;
@@ -25,14 +26,14 @@ type ScrollableState = {
   itemsToDisplay: number;
 }
 
-type ScrollableAction =
+type SelectAction =
   { type: "scrollDown" }
   | { type: "scrollUp" }
   | { type: "selectItem", x: number, y: number, shift: boolean }
   | { type: "updateBoundingBox", position: Position }
   | { type: "updateFromProps", multipleSelect: boolean, itemsLength: number, itemsToDisplay: number }
 
-function scrollableReducer(state: ScrollableState, action: ScrollableAction): ScrollableState {
+function selectReducer(state: SelectState, action: SelectAction): SelectState {
   if (action.type === "scrollDown") {
     return ({
       ...state,
@@ -102,11 +103,11 @@ function scrollableReducer(state: ScrollableState, action: ScrollableAction): Sc
   throw new Error("Unknown action");
 }
 
-export function Scrollable(props: ScrollableBox) {
+export function Select(props: SelectProps) {
   const updateLocation = useMouse();
   const ref = useRef<DOMElement | null>(null);
-  const [scrollableState, dispatch] = useReducer(
-    scrollableReducer,
+  const [selectState, dispatch] = useReducer(
+    selectReducer,
     {
       currentIndex: 0,
       selectedIndexes: [],
@@ -127,7 +128,7 @@ export function Scrollable(props: ScrollableBox) {
         bottom: layout.top + layout.height
       }
 
-      if (!isDeepStrictEqual(position, scrollableState.currentBoundingBox)) {
+      if (!isDeepStrictEqual(position, selectState.currentBoundingBox)) {
         dispatch({ type: "updateBoundingBox", position })
         updateLocation(
           null, {
@@ -155,15 +156,21 @@ export function Scrollable(props: ScrollableBox) {
     })
   }, [props.items, props.itemsToDisplay, props.multipleSelect]);
 
+  useEffect(() => {
+    if (selectState.selectedIndexes.length > 0) {
+      props.onSelect(selectState.selectedIndexes)
+    }
+  }, [selectState.selectedIndexes]);
+
 
   let items = [];
   let widestItem = 0;
-  let scrollbarItems = [];
+  let selectItems = [];
   for (let i = 0; i < props.items.length; i++) {
     const item = props.items[i];
-    if (i >= scrollableState.currentIndex && i < scrollableState.currentIndex + props.itemsToDisplay) {
+    if (i >= selectState.currentIndex && i < selectState.currentIndex + props.itemsToDisplay) {
       let backgroundColor = "black"
-      if (scrollableState.selectedIndexes.includes(i)) {
+      if (selectState.selectedIndexes.includes(i)) {
         backgroundColor = "grey"
       }
       items.push(<Box key={item}><Text backgroundColor={backgroundColor}>{item}</Text></Box>);
@@ -171,13 +178,13 @@ export function Scrollable(props: ScrollableBox) {
     widestItem = Math.max(item.length, widestItem);
   }
 
-  let barPosition = Math.floor((scrollableState.currentIndex / props.items.length) * props.itemsToDisplay);
+  let barPosition = Math.floor((selectState.currentIndex / props.items.length) * props.itemsToDisplay);
 
   for (let i = 0; i < props.itemsToDisplay; i++) {
     if (i === barPosition) {
-      scrollbarItems.push(<Box key={i}><Text>│║</Text></Box>);
+      selectItems.push(<Box key={i}><Text>│║</Text></Box>);
     } else {
-      scrollbarItems.push(<Box key={i}><Text>│</Text></Box>);
+      selectItems.push(<Box key={i}><Text>│</Text></Box>);
     }
   }
 
@@ -187,7 +194,7 @@ export function Scrollable(props: ScrollableBox) {
         {items}
       </Box>
       <Box flexDirection="column">
-        {scrollbarItems}
+        {selectItems}
       </Box>
     </Box>
   );
