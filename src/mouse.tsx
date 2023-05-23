@@ -35,8 +35,6 @@ export type Position = {
   right: number,
 }
 
-type YogaLayout = ReturnType<Node["getComputedLayout"]>
-
 export type Location = {
   position: Position,
   callback: LocationCallback

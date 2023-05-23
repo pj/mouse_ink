@@ -178,7 +178,7 @@ export function Select(props: SelectProps) {
     widestItem = Math.max(item.length, widestItem);
   }
 
-  let barPosition = Math.floor((selectState.currentIndex / props.items.length) * props.itemsToDisplay);
+  let barPosition = Math.round((selectState.currentIndex / props.items.length) * props.itemsToDisplay);
 
   for (let i = 0; i < props.itemsToDisplay; i++) {
     if (i === barPosition) {

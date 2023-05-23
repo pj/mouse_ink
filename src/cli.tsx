@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { Box, Text, render, useApp, useInput } from 'ink';
+import { Box, Newline, Text, render, useApp, useInput } from 'ink';
 import React, { useState } from 'react';
 import { MouseProvider, MouseEvent } from './mouse.js';
 import { Button } from './button.js';
@@ -44,6 +44,9 @@ export default function App() {
           <Text>
             Button Event: <Text color="green">{message}</Text>
           </Text>
+          <Newline/>
+          <Text>-----------------</Text>
+          <Text bold={true}>Single Select</Text>
           <Select 
             itemsToDisplay={5} 
             items={items} 
@@ -51,8 +54,11 @@ export default function App() {
             onSelect={(selected: number[]) => setScrollable1Indexes(selected)}
           />
           <Text>
-            Scrollable 1 Selected Indexes: <Text color="green">{JSON.stringify(scrollable1Indexes)}</Text>
+            Single select index: <Text color="green">{JSON.stringify(scrollable1Indexes)}</Text>
           </Text>
+          <Newline/>
+          <Text>-----------------</Text>
+          <Text bold={true}>Multi Select</Text>
           <Select 
             itemsToDisplay={5} 
             items={items} 
@@ -60,7 +66,7 @@ export default function App() {
             onSelect={(selected: number[]) => setScrollable2Indexes(selected)}
           />
           <Text>
-            Scrollable 2 Selected Indexes: <Text color="green">{JSON.stringify(scrollable2Indexes)}</Text>
+            Multi select Indexes: <Text color="green">{JSON.stringify(scrollable2Indexes)}</Text>
           </Text>
         </Box>
       </MouseProvider>
