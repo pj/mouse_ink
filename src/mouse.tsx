@@ -130,10 +130,12 @@ export function MouseProvider(props: MouseProps) {
   useEffect(
     () => {
       if (props.fullScreen) {
+        // Set fullscreen mode.
         process.stdout.write('\x1b[?1049h');
         process.stdout.write('\x1bc');
         setFullScreenEnabled(true);
       }
+      // Unset mouse mode.
       process.stdout.write('\x1b[?1000h');
       // Enable SGR mode to get support for wider terminals.
       process.stdout.write('\x1b[?1006h');
@@ -146,15 +148,15 @@ export function MouseProvider(props: MouseProps) {
       if (!props.fullScreen) {
         // Get initial cursor position
         process.stdout.write(`\x1b[6n`);
-        // unhookIntercept = intercept((txt: string) => {
-        //   return `${txt}\x1b[6n`;
-        // });
       }
 
       return (() => {
+        // Unset SGR mouse mode.
         process.stdout.write('\x1b[?1006l');
+        // Unset mouse mode.
         process.stdout.write('\x1b[?1000l');
         if (props.fullScreen) {
+          // Unset alternate mode.
           process.stdout.write('\x1b[?1049l');
         } else if (unhookIntercept) {
           unhookIntercept()
